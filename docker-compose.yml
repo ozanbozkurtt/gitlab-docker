@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: unless-stopped
+    ports:
+      - "443:443"
+      - "80:80"
+      - "2222:22"
+    volumes:
+      - ./config:/etc/gitlab
+      - ./logs:/var/log/gitlab
+      - ./data:/var/opt/gitlab
+
+  gitlab-runner:
+    image: gitlab/gitlab-runner:v14.7.0
+    container_name: gitlab-runner
+    restart: always
+    volumes:
+      - ./config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
